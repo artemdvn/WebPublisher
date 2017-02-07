@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/data/jpa
+            http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+            http://www.springframework.org/schema/data/mongo
+            http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
+
+    <!-- for @Annotation-based configuration -->
+    <context:annotation-config/>
+
+    <!-- path for beans definition -->
+    <context:component-scan base-package="com.github.artemdvn.webpublisher.dao"/>
+    <context:component-scan base-package="com.github.artemdvn.webpublisher.services"/>
+    <context:component-scan base-package="com.github.artemdvn.webpublisher.model"/>
+
+    <context:property-placeholder location="/test-db.properties"/>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${db.connection.driver}"/>
+        <property name="url" value="${db.connection.url}"/>
+        <property name="username" value="${db.connection.userName}"/>
+        <property name="password" value="${db.connection.password}"/>
+    </bean>
+
+    <bean id="transactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+    <!-- Hibernate session factory settings -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation">
+			<value>classpath:hibernate.cfg.xml</value>
+		</property>
+		<property name="packagesToScan" value="com.github.artemdvn.webpublisher" />
+		<property name="hibernateProperties">
+			<props>
+                <prop key="hibernate.dialect">${hibernate.connection.dialect}</prop>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.connection.hbm2ddl.auto}</prop>
+                <prop key="hibernate.show_sql">${hibernate.connection.show_sql}</prop>
+                <prop key="hibernate.format_sql">${hibernate.connection.format_sql}</prop>
+            </props>
+		</property>
+	</bean>
+
+</beans>

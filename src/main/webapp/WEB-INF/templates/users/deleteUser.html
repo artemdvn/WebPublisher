@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout :: site-head">
+	<meta charset="UTF-8" />
+    <title>Web Publisher</title>
+</head>
+
+<body>
+<header th:replace="layout :: site-header" />
+
+<div class="col-sm-12">
+	<form name="user" action="#" data-th-action="@{/users/delete}" data-th-object="${user}" method="get">
+	    <table class="table table-striped">
+	    <caption>Delete User</caption>
+	     <thead>
+		   <tr>
+		    <th>Id</th>
+		    <th>Name</th>
+		    <th>Email</th>
+		    <th>Role</th>
+		   </tr>
+		  </thead>
+	     <tbody>
+	     <tr>
+				<td data-th-text="${user.id}">
+				<td data-th-text="${user.name}">
+				<td data-th-text="${user.email}">
+				<td data-th-text="${user.role}">
+				<td><a href="#" data-th-href="@{/users/delete(id=${user.id}, action=delete)}">
+	             <button class="btn btn-primary" type="button">Delete</button></a>
+	            </td>
+			    <td><a href="#" data-th-href="@{/users/delete(id=${user.id}, action=cancel)}">
+	             <button class="btn btn-default" type="button">Cancel</button></a>
+	            </td>
+		</tr>
+		</tbody>
+	    </table>
+	</form>
+</div>
+
+<footer th:replace="layout :: site-footer" />
+</body>
+
+</html>

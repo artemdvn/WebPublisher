@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout :: site-head">
+	<meta charset="UTF-8" />
+    <title>Web Publisher</title>
+</head>
+
+<body>
+<header th:replace="layout :: site-header" />
+
+<div class="col-sm-12">
+	<div th:if="${not #lists.isEmpty(users)}">
+	    <table class="table table-striped">
+	    <caption>Users</caption>
+	     <thead>
+		   <tr>
+		    <th>Id</th>
+		    <th>Name</th>
+		    <th>Email</th>
+		    <th>Role</th>
+		   </tr>
+		  </thead>
+	     <tbody>
+			<tr th:each="user : ${users}">
+			    <td th:text="${user.id}">111</td>
+			    <td th:text="${user.name}">Tom</td>
+			    <td th:text="${user.email}">email</td>
+			    <td th:text="${user.role}">role</td>
+			    <td><a th:href="|/WebPublisher/users/edit?id=${user.id}|">Edit</a></td>
+			    <td><a th:href="|/WebPublisher/users/delete?id=${user.id}&action=form|">Delete</a></td>
+	        </tr>
+	     </tbody>
+	    </table>
+	</div>
+</div>
+
+<div class="col-sm-12">
+	<form name="newUser" action="#" data-th-action="@{/users/add}" data-th-object="${newUser}" method="post">
+	    <table class="table table-striped">
+	    <caption>New User</caption>
+	     <thead>
+		   <tr>
+		    <th>Name</th>
+		    <th>Email</th>
+		    <th>Role</th>
+		   </tr>
+		  </thead>
+	     <tbody>
+	     <tr>
+				<td><input id="user-name-field" type="text" name ='name' data-th-field="*{name}"/></td>
+			    <td><input type="text" data-th-field="*{email}"/></td>
+			    <td sec:authorize="hasAuthority('ADMIN')"><select th:field="*{role}">
+			    	<option th:each="role : ${T(com.github.artemdvn.webpublisher.model.UserRole).values()}"
+			          th:value="${role}" 
+			          th:text="${role}">
+				   </option>  
+				</select></td>
+				<td sec:authorize="hasAuthority('ADOPS')"><select th:field="*{role}">
+					<option th:value="PUBLISHER">PUBLISHER</option>
+			    </select></td>
+			    <td> <button class="btn btn-success" type="submit" onclick="isEmptyUserName()">Add</button></td>
+		</tr>
+		</tbody>
+	    </table>
+	</form>
+</div>
+
+<footer th:replace="layout :: site-footer" />
+
+</body>
+
+</html>

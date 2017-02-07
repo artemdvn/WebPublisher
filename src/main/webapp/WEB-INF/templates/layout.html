@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="site-head">
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="../resources/css/style.css"
+		th:href="@{/resources/css/style.css}"/>
+	<link rel="icon" href="../resources/img/icon.ico"
+		th:href="@{/resources/img/icon.ico}" />
+	<script src="../resources/js/jquery-3.1.1.min.js"
+		th:src="@{/resources/js/jquery-3.1.1.min.js}"></script>
+	<script th:src="@{/resources/js/nameNotEmpty.js}"></script>
+</head>
+
+<body>
+	<header th:fragment="site-header">
+		<nav class="navbar navbar-default">
+		  <div class="container-fluid">
+		    <ul class="nav navbar-nav">
+		      <li class="active"><a href="index.html" th:href="@{/}">
+		      <img src="../resources/img/logo.png" th:src="@{/resources/img/logo.png}" /></a></li>
+		      <li sec:authorize="isAuthenticated() AND (hasAuthority('PUBLISHER') OR hasAuthority('ADOPS'))"><a href="posts/index.html" th:href="@{/apps}">Apps/Sites</a></li>
+		      <li sec:authorize="isAuthenticated() AND (hasAuthority('ADMIN') OR hasAuthority('ADOPS'))"><a href="users.html" th:href="@{/users}">Users</a></li>
+		    </ul>
+		    
+		    <ul sec:authorize="isAuthenticated()" class="nav navbar-nav navbar-right" >
+		      <li><a href="/WebPublisher/j_spring_security_logout"><span
+                        class="glyphicon glyphicon-log-out" sec:authentication="name"></span> Logout</a></li>    
+		      
+		    </ul>
+		    
+		    <form sec:authorize="isAnonymous()" class="navbar-form navbar-right" method="post" action="/WebPublisher/j_spring_security_check">
+		      <input class="form-control" type="text" name="player_name"
+                           placeholder="Enter login">
+
+                    <input class="form-control" type="text" name="player_email"
+                           placeholder="Enter email">
+
+                    <input class="btn btn-primary" type="submit" value=Login>
+
+            </form>
+		    
+		  </div>
+		</nav>
+		
+	</header>
+	<h1>Welcome</h1>
+	<p>Welcome to Web Publisher.</p>
+	<div class="footer navbar-fixed-bottom">
+		<footer th:fragment="site-footer"> &copy; Web Publisher, 2017 </footer>
+	</div>	
+</body>
+</html>

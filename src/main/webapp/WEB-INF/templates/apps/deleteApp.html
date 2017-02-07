@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout :: site-head">
+	<meta charset="UTF-8" />
+    <title>Web Publisher</title>
+</head>
+
+<body>
+<header th:replace="layout :: site-header" />
+
+<div class="col-sm-12">
+	<form name="app" action="#" data-th-action="@{/apps/delete}" data-th-object="${app}" method="get">
+	    <table class="table table-striped">
+	    <caption>Delete App / Site</caption>
+	     <thead>
+		   <tr>
+		    <th>Id</th>
+		    <th>Name</th>
+		    <th>App Type</th>
+		    <th>Content Types</th>
+		    <th>User</th>
+		   </tr>
+		  </thead>
+	     <tbody>
+	     <tr>
+				<td data-th-text="${app.id}">
+				<td data-th-text="${app.name}">
+				<td data-th-text="${app.type}">
+				<td data-th-text="${app.contentTypes}">
+				<td data-th-text="${app.user.name}">
+				<td><a href="#" data-th-href="@{/apps/delete(id=${app.id}, action=delete)}">
+	             <button class="btn btn-primary" type="button">Delete</button></a>
+	            </td>
+			    <td><a href="#" data-th-href="@{/apps/delete(id=${app.id}, action=cancel)}">
+	             <button class="btn btn-default" type="button">Cancel</button></a>
+	            </td>
+		</tr>
+		</tbody>
+	    </table>
+	</form>
+</div>
+
+<footer th:replace="layout :: site-footer" />
+</body>
+
+</html>

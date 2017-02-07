@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout :: site-head">
+	<meta charset="UTF-8" />
+    <title>Web Publisher</title>
+    <script src="/resources/js/nameNotEmpty.js"></script>
+</head>
+
+<body>
+<header th:replace="layout :: site-header" />
+
+<div class="col-sm-12">
+	<div th:if="${not #lists.isEmpty(apps)}">
+	    <table class="table table-striped">
+	    <caption>Apps / Sites</caption>
+	     <thead>
+		   <tr>
+		    <th>Id</th>
+		    <th>Name</th>
+		    <th>App Type</th>
+		    <th>Content Types</th>
+		    <th>User</th>
+		   </tr>
+		  </thead>
+	     <tbody>
+			<tr th:each="app : ${apps}">
+			    <td th:text="${app.id}"></td>
+			    <td th:text="${app.name}"></td>
+			    <td th:text="${app.type}"></td>
+			    <td th:text="${app.contentTypes}"></td>
+			    <td th:text="${app.user.name}"></td>
+			    <td><a th:href="|/WebPublisher/apps/edit?id=${app.id}|">Edit</a></td>
+			    <td><a th:href="|/WebPublisher/apps/delete?id=${app.id}&action=form|">Delete</a></td>
+	        </tr>
+	     </tbody>
+	    </table>
+	</div>
+</div>
+
+<div class="col-sm-12">
+	<form name="newApp" action="#" data-th-action="@{/apps/add}" data-th-object="${newApp}" method="post">
+	    <table class="table table-striped">
+	    <caption>New App / Site</caption>
+	     <thead>
+		   <tr>
+		    <th>Name</th>
+		    <th>App Type</th>
+		    <th>Content Types</th>		    
+		   </tr>
+		  </thead>
+	     <tbody>
+	     <tr>
+				<td><input id="app-name-field" type="text" name ='name' data-th-field="*{name}"/></td>
+			    <td><select th:field="*{type}">
+			    	<option th:each="type : ${T(com.github.artemdvn.webpublisher.model.AppType).values()}"
+			          th:value="${type}" 
+			          th:text="${type}">
+				   </option>  
+				</select></td>
+				<td th:each="contentType : ${T(com.github.artemdvn.webpublisher.model.ContentType).values()}">
+				    <input type="checkbox" th:id="${{contentType}}" th:value="${{contentType}}" th:field="*{contentTypes}" th:text="${{contentType}}"/>
+				</td>
+			    <td> <button class="btn btn-success" type="submit" onclick="isEmptyAppName()">Add</button></td>
+		</tr>
+		</tbody>
+	    </table>
+	</form>
+</div>
+
+<footer th:replace="layout :: site-footer" />
+</body>
+
+</html>

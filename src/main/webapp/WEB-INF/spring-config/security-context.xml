@@ -1,0 +1,44 @@
+<b:beans xmlns="http://www.springframework.org/schema/security"
+         xmlns:b="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <http>
+        <form-login login-page="/" authentication-failure-url="/?error=true"
+                    username-parameter="player_name" password-parameter="player_email"
+                    login-processing-url="/j_spring_security_check"
+                    always-use-default-target="true"
+                    default-target-url="/"
+        />
+        <csrf disabled="true"/>
+        <access-denied-handler error-page="/error" />
+        <intercept-url pattern="/resources/**" access="permitAll"/>
+        <intercept-url pattern="/" access="permitAll"/>
+        <intercept-url pattern="/register" access="permitAll"/>
+        <intercept-url pattern="/registration" access="permitAll"/>
+        <intercept-url pattern="/users" access="hasAuthority('ADMIN') OR hasAuthority('ADOPS')"/>
+		<intercept-url pattern="/apps" access="hasAuthority('ADOPS') OR hasAuthority('PUBLISHER')"/>
+
+        <logout
+                logout-url="/j_spring_security_logout"
+                logout-success-url="/"
+        />
+    </http>
+    <authentication-manager>
+        <authentication-provider>
+            <jdbc-user-service id="userDetailsService" data-source-ref="dataSource"
+                               users-by-username-query=
+                                       "SELECT name as username, email as password, 1 as enabled FROM users WHERE name = ?"
+                               authorities-by-username-query=
+                                       "SELECT name as username, role as authority FROM users WHERE name = ?"
+            />
+        </authentication-provider>
+    </authentication-manager>
+
+    <b:bean id="daoAuthenticationProvider"
+            class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <b:property name="userDetailsService" ref="userDetailsService"/>
+    </b:bean>
+
+</b:beans>

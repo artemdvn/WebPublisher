@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout :: site-head">
+	<meta charset="UTF-8" />
+    <title>Web Publisher</title>
+</head>
+
+<body>
+<header th:replace="layout :: site-header" />
+
+<div class="col-sm-12">
+	<form name="app" action="#" data-th-action="@{/apps/edit}" data-th-object="${app}" method="post">
+	    <table class="table table-striped">
+	    <caption>Edit App / Site</caption>
+	     <thead>
+		   <tr>
+		    <th>Name</th>
+		    <th>App Type</th>
+		    <th>Content Types</th>
+		   </tr>
+		  </thead>
+	     <tbody>
+	     <tr>
+				<td><input type="text" hidden="hidden" data-th-value="*{id}" data-th-field="*{id}"/>
+					<input type="text" hidden="hidden" data-th-value="*{user.id}" data-th-field="*{user.id}"/>
+					<input type="text" hidden="hidden" data-th-value="*{user.name}" data-th-field="*{user.name}"/>
+					<input type="text" hidden="hidden" data-th-value="*{user.email}" data-th-field="*{user.email}"/>
+					<input type="text" hidden="hidden" data-th-value="*{user.role}" data-th-field="*{user.role}"/>
+					<input type="text" id="app-name-field" name ='name' data-th-value="*{name}" data-th-field="*{name}"/></td>
+				
+				<td><select th:field="*{type}">
+			    	<option th:each="type : ${T(com.github.artemdvn.webpublisher.model.AppType).values()}"
+			          th:value="${type}" 
+			          th:text="${type}">
+				   </option>  
+				</select></td>
+				<td th:each="contentType : ${T(com.github.artemdvn.webpublisher.model.ContentType).values()}">
+				    <input type="checkbox" th:id="${{contentType}}" th:value="${{contentType}}" th:field="*{contentTypes}" th:text="${{contentType}}"/>
+				</td>
+				<td>
+			     <button class="btn btn-primary" type="submit" onclick="isEmptyAppName()" name="action" value="save">Save</button>
+			    </td>
+			    <td>
+			     <button class="btn btn-default" type="submit" name="action" value="cancel">Cancel</button>
+			    </td>
+		</tr>
+		</tbody>
+	    </table>
+	</form>
+</div>
+
+<footer th:replace="layout :: site-footer" />
+</body>
+
+</html>

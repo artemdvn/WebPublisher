@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout :: site-head">
+	<meta charset="UTF-8" />
+    <title>Web Publisher</title>
+</head>
+
+<body>
+<header th:replace="layout :: site-header" />
+
+<div class="col-sm-12">
+	<form name="user" action="#" data-th-action="@{/users/edit}" data-th-object="${user}" method="post">
+	    <table class="table table-striped">
+	    <caption>Edit User</caption>
+	     <thead>
+		   <tr>
+		    <th>Name</th>
+		    <th>Email</th>
+		    <th>Role</th>
+		   </tr>
+		  </thead>
+	     <tbody>
+	     <tr>
+				<td><input type="text" hidden="hidden" data-th-value="*{id}" data-th-field="*{id}"/>
+					<input id="user-name-field" type="text" name ='name' data-th-value="*{name}" data-th-field="*{name}"/></td>
+			    <td><input type="text" data-th-field="*{email}"/></td>
+			    <td sec:authorize="hasAuthority('ADMIN')"><select th:field="*{role}">
+			    	<option th:each="role : ${T(com.github.artemdvn.webpublisher.model.UserRole).values()}"
+			          th:value="${role}" 
+			          th:text="${role}">
+				   </option>  
+				</select></td>
+				<td sec:authorize="hasAuthority('ADOPS')"><select th:field="*{role}">
+					<option th:value="PUBLISHER">PUBLISHER</option>
+			    </select></td>
+				<td>
+			     <button class="btn btn-primary" type="submit" onclick="isEmptyUserName()" name="action" value="save">Save</button>
+			    </td>
+			    <td>
+			     <button class="btn btn-default" type="submit" name="action" value="cancel">Cancel</button>
+			    </td>
+		</tr>
+		</tbody>
+	    </table>
+	</form>
+</div>
+
+<footer th:replace="layout :: site-footer" />
+</body>
+
+</html>
